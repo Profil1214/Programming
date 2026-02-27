@@ -7,35 +7,77 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="444" Width="785">
     <Grid Margin="15">
-        <Button Content="Button" HorizontalAlignment="Left" Margin="555,355,0,0" VerticalAlignment="Top" Height="25" Width="75"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="658,355,0,0" VerticalAlignment="Top" Height="25" Width="75"/>
-        <GroupBox Header="Edit Contact" Margin="15" Padding="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Заголовок -->
+            <RowDefinition Height="*"/>
+            <!-- GroupBox'ы -->
+            <RowDefinition Height="Auto"/>
+            <!-- Кнопки -->
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <!-- Edit Contact -->
+            <ColumnDefinition Width="10"/>
+            <!-- Отступ между колонками -->
+            <ColumnDefinition Width="*"/>
+            <!-- Read Contact -->
+        </Grid.ColumnDefinitions>
+
+        
+        <!-- Edit Contact (левая колонка) -->
+        <GroupBox Grid.Row="1" 
+                  Grid.Column="0"
+                  Header="Edit Contact" 
+                  Padding="8"
+                  BorderBrush="#ccc">
             <StackPanel>
-                <!-- Name -->
-                <WrapPanel Margin="0,0,0,3">
-                    <TextBlock Text="Name:" Width="80" VerticalAlignment="Center"/>
-                    <TextBox Text="Смирнов Юрий" Width="200"/>
-                </WrapPanel>
+                <TextBlock Text="Name:" Margin="0,0,0,3"/>
+                <TextBox Text ="{Binding Contact.Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12"/>
 
-                <!-- Phone Number -->
-                <WrapPanel Margin="0,0,0,3">
-                    <TextBlock Text="Phone Number:" Width="80" VerticalAlignment="Center"/>
-                    <TextBox Text="+7-913-111-22-33" Width="200"/>
-                </WrapPanel>
+                <TextBlock Text="Phone Number:" Margin="0,0,0,3"/>
+                <TextBox Text ="{Binding Contact.Number, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12"/>
 
-                <!-- Email -->
-                <WrapPanel Margin="0,0,0,3">
-                    <TextBlock Text="Email:" Width="80" VerticalAlignment="Center"/>
-                    <TextBox Text="yuri.smirnov@no.mail" Width="200"/>
-                </WrapPanel>
+                <TextBlock Text="Email:" Margin="0,0,0,3"/>
+                <TextBox Text ="{Binding Contact.Email, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,0"/>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Read Contact" Margin="361,49,10,58"/>
-        <TextBlock HorizontalAlignment="Left" Margin="370,72,0,0" TextWrapping="Wrap" Text="Name:" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="370,113,0,0" TextWrapping="Wrap" Text="PhoneNumber:" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="370,155,0,0" TextWrapping="Wrap" Text="Email:" VerticalAlignment="Top"/>
-        <StackPanel>
-            
+
+        <!-- Read Contact (правая колонка) -->
+        <GroupBox Grid.Row="1" 
+                  Grid.Column="2"
+                  Header="Read Contact" 
+                  Padding="8"
+                  BorderBrush="#ccc">
+            <StackPanel>
+                <TextBlock Text="Name:" Margin="0,0,0,3"/>
+                <TextBlock Text="{Binding Contact.Name}" 
+                           Margin="0,0,0,12" 
+                           FontSize="14"/>
+
+                <TextBlock Text="Phone Number:" Margin="0,0,0,3"/>
+                <TextBlock Text = "{Binding Contact.Number}"
+                           Margin="0,0,0,12" 
+                           FontSize="14"/>
+
+                <TextBlock Text="Email:" Margin="0,0,0,3"/>
+                <TextBlock Text="{Binding Contact.Email}" 
+                           FontSize="14"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Кнопки (внизу по центру) -->
+        <StackPanel Grid.Row="2" 
+                    Grid.Column="0" 
+                    Grid.ColumnSpan="3"
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Margin="0,15,0,0">
+            <Button Content="Save" Width="75" Height="25" Margin="5"
+            Command="{Binding SaveCommand}"/>
+            <Button Content="Load" Width="75" Height="25" Margin="5"
+            Command="{Binding LoadCommand}"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -9,9 +9,9 @@ namespace View.Model
     class Contact
     {
         private string _name;
-        private int _number;
+        private string _number;
         private string _email;
-        public Contact(string name, int number, string email)
+        public Contact(string name, string number, string email)
         {
             Name = name;
             Number = number;
@@ -29,14 +29,14 @@ namespace View.Model
                 _name = value;
             } 
         }
-        public int Number
+        public string Number
         {
             get { return _number; }
             set
             {
-                if (value < 0 || value.ToString().Length == 11)
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException("Номер должен содержать 11 цифр");
+                    throw new ArgumentException("Номер введен неверно");
                 }
                 _number = value;
             }
