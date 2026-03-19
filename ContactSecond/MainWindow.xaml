@@ -4,9 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ContactSecond"
+        xmlns:converters="clr-namespace:ContactSecond.ViewModel.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Margin="15">
+    <Window.Resources>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </Window.Resources>
+
+    <Grid Margin="5">
 
         <Grid.RowDefinitions>
             <RowDefinition Height= "*"/>
@@ -21,19 +26,90 @@
 
         <GridSplitter Grid.Column="1" ShowsPreview="False" Width="3" 
                       HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
-           
-        
+          
         <GroupBox Grid.Row="0" 
                   Grid.Column="0"
                   Padding="8"
                   BorderBrush="#f8f8f8">
             <StackPanel>
-                <TextBlock Text="Find:" Margin="0,0,0,3"/>
-                <TextBox Margin="0,0,0,13"/>
-                <ListBox Margin="0,0,0,15" Padding="150"/>
-                
-
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column ="0"  Text="Find:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBox Grid.Column ="1" />
+                </Grid>
+                <ListBox Margin="0,0,0,3" Height="320"
+                         ItemsSource="{Binding Contacts}"
+                         SelectedItem="{Binding SelectedContact}"
+                         DisplayMemberPath="Name"
+                         />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width = "*"/>
+                        <ColumnDefinition Width= "*"/>
+                        <ColumnDefinition Width= "*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Margin="0,0,3,0" Content="Add" Command="{Binding AddCommand}" Height="25" />
+                    <Button Grid.Column="1" Margin="0,0,3,0" Content="Edit" Command ="{Binding EditCommand}"  Height="25" 
+                            />
+                    <Button Grid.Column="2" Margin="0,0,0,0" Content="Remove" Command="{Binding RemoveCommand}" Height="25"/>
+                    
+                </Grid>
             </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="0"
+                  Grid.Column="2"
+                  Padding="8">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                
+                <Border Width="100"
+                        VerticalAlignment="Top"
+                        Grid.Column="0"
+                        Height="100"
+                        Margin="0,25,0,0"
+                        HorizontalAlignment="Left">
+                    <Image Source="/doc/User.jpg"/>
+                </Border>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock 
+                            Text="Name:"
+                            Margin="3,0,0,0"/>
+                        <TextBox
+                            Margin="3,8,0,0"
+                            IsReadOnly="{Binding IsAddingNew, Converter={StaticResource InverseBooleanConverter}}"
+                            Text="{Binding SelectedContact.Name, UpdateSourceTrigger=PropertyChanged}"
+                            />
+                        <TextBlock
+                            Text="Phone Number:"
+                            Margin="3,8,0,0"/>
+                        <TextBox
+                            Margin="3,8,0,0"
+                            IsReadOnly="{Binding IsAddingNew, Converter={StaticResource InverseBooleanConverter}}"
+                            Text="{Binding SelectedContact.PhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Email"
+                                   Margin="3,8,0,0"/>
+                        <TextBox Margin="3,8,0,0"
+                                 IsReadOnly="{Binding IsAddingNew, Converter={StaticResource InverseBooleanConverter}}"
+                                 Text="{Binding SelectedContact.Email, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Content="Apply"
+                                Command="{Binding ApplyCommand}"
+                                Width="75"
+                                Height="25"
+                                Margin="0,50,0,0"
+                                HorizontalAlignment="Left"
+                                Visibility="{Binding IsAddingNew, Converter={StaticResource InverseBooleanConverter}}">
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+
 
         </GroupBox>
     </Grid>
