@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ContactSecond"
         xmlns:converters="clr-namespace:ContactSecond.ViewModel.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Contact" Height="450" Width="800">
     <Window.Resources>
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
     </Window.Resources>
@@ -31,8 +31,13 @@
                   Grid.Column="0"
                   Padding="8"
                   BorderBrush="#f8f8f8">
-            <StackPanel>
-                <Grid Margin="0,0,0,5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid Margin="0,0,0,5" Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -40,12 +45,13 @@
                     <TextBlock Grid.Column ="0"  Text="Find:" VerticalAlignment="Center" Margin="0,0,5,0"/>
                     <TextBox Grid.Column ="1" />
                 </Grid>
-                <ListBox Margin="0,0,0,3" Height="320"
+                
+                <ListBox Margin="0,0,0,3"  Grid.Row="1"
                          ItemsSource="{Binding Contacts}"
                          SelectedItem="{Binding SelectedContact}"
                          DisplayMemberPath="Name"
                          />
-                <Grid>
+                <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width = "*"/>
                         <ColumnDefinition Width= "*"/>
@@ -57,7 +63,7 @@
                     <Button Grid.Column="2" Margin="0,0,0,0" Content="Remove" Command="{Binding RemoveCommand}" Height="25"/>
                     
                 </Grid>
-            </StackPanel>
+            </Grid>
         </GroupBox>
         <GroupBox Grid.Row="0"
                   Grid.Column="2"
