@@ -5,10 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ContactSecond"
         xmlns:converters="clr-namespace:ContactSecond.ViewModel.Converters"
+        xmlns:views="clr-namespace:ContactSecond.Controls"
         mc:Ignorable="d"
-        Title="Contact" Height="450" Width="800">
+        Title="Contact" Height="450" Width="800"
+        x:Name="MainWindowRoot">
+    
     <Window.Resources>
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <DataTemplate x:Key="contactTemplate">
+            <StackPanel Margin="3">
+                <TextBlock Text="{Binding Name}"/>
+                <TextBlock Text="{Binding PhoneNumber}"/>
+            </StackPanel>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid Margin="5">
@@ -46,11 +55,29 @@
                     <TextBox Grid.Column ="1" />
                 </Grid>
                 
-                <ListBox Margin="0,0,0,3"  Grid.Row="1"
-                         ItemsSource="{Binding Contacts}"
-                         SelectedItem="{Binding SelectedContact}"
-                         DisplayMemberPath="Name"
-                         />
+                <ListBox 
+                    
+                    Grid.Column="0"
+                    Margin="3"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    ItemsSource="{Binding Contacts}"
+                    SelectedItem="{Binding SelectedContact}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="3">
+                                <TextBlock
+                                    FontSize="12"
+                                    FontWeight="SemiBold"
+                                    Text="{Binding Name}"/>
+                                <TextBlock
+                                    FontSize="10"
+                                    Text="{Binding PhoneNumber}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width = "*"/>
@@ -69,54 +96,18 @@
                   Grid.Column="2"
                   Padding="8">
             <StackPanel>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                
-                <Border Width="100"
-                        VerticalAlignment="Top"
-                        Grid.Column="0"
-                        Height="100"
-                        Margin="0,25,0,0"
-                        HorizontalAlignment="Left">
-                    <Image Source="/doc/User.jpg"/>
-                </Border>
-                    <StackPanel Grid.Column="1">
-                        <TextBlock 
-                            Text="Name:"
-                            Margin="3,0,0,0"/>
-                        <TextBox
-                            Margin="3,8,0,0"
-                            IsReadOnly="{Binding IsAddingNew, Converter={StaticResource InverseBooleanConverter}}"
-                            Text="{Binding SelectedContact.Name, UpdateSourceTrigger=PropertyChanged}"
-                            />
-                        <TextBlock
-                            Text="Phone Number:"
-                            Margin="3,8,0,0"/>
-                        <TextBox
-                            Margin="3,8,0,0"
-                            IsReadOnly="{Binding IsAddingNew, Converter={StaticResource InverseBooleanConverter}}"
-                            Text="{Binding SelectedContact.PhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock Text="Email"
-                                   Margin="3,8,0,0"/>
-                        <TextBox Margin="3,8,0,0"
-                                 IsReadOnly="{Binding IsAddingNew, Converter={StaticResource InverseBooleanConverter}}"
-                                 Text="{Binding SelectedContact.Email, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Button Content="Apply"
-                                Command="{Binding ApplyCommand}"
-                                Width="75"
-                                Height="25"
-                                Margin="0,50,0,0"
-                                HorizontalAlignment="Left"
-                                Visibility="{Binding IsAddingNew, Converter={StaticResource InverseBooleanConverter}}">
-                        </Button>
-                    </StackPanel>
-                </Grid>
+                <views:ContactControl 
+                     DataContext="{Binding SelectedContact}"
+                     IsReadOnly="{Binding DataContext.IsAddingNew, ElementName=MainWindowRoot, Converter={StaticResource InverseBooleanConverter}}"/>
+                <Button Content="Apply" 
+                     Command="{Binding ApplyCommand}"
+                     Width="75"
+                     Height="25"
+                     Margin="105,50,0,0"
+                     HorizontalAlignment="Left"
+                     Visibility="{Binding IsAddingNew, Converter={StaticResource InverseBooleanConverter}}">
+                </Button>
             </StackPanel>
-
-
         </GroupBox>
     </Grid>
 </Window>
