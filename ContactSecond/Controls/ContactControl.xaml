@@ -33,20 +33,21 @@
         <TextBox
                 Margin="3,8,0,0"
                 IsReadOnly="{Binding IsReadOnly, ElementName=Root}"
-                Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                Text="{Binding Name, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
             />
         <TextBlock
                 Text="Phone Number:"
                 Margin="3,8,0,0"/>
         <TextBox
+               x:Name="PhoneNumberTextBox"
                Margin="3,8,0,0"
                IsReadOnly="{Binding IsReadOnly, ElementName=Root}"
-               Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
+               Text="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Text="Email"
                    Margin="3,8,0,0"/>
         <TextBox Margin="3,8,0,0"
                IsReadOnly="{Binding IsReadOnly, ElementName=Root}"
-               Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
+               Text="{Binding Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
     </StackPanel>
 </Grid>
 </UserControl>

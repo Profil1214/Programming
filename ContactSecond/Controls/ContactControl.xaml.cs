@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,6 +35,28 @@ namespace ContactSecond.Controls
         public ContactControl()
         {
             InitializeComponent();
+            PhoneNumberTextBox.PreviewTextInput += PhoneNumberTextBox_PreviewTextInput;
+            DataObject.AddPastingHandler(PhoneNumberTextBox, PhoneNumberTextBox_Pasting);
+        }
+        private void PhoneNumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex(@"^[\d\+\-\(\)\s]$");
+            if (!regex.IsMatch(e.Text))
+            {
+                e.Handled = true;
+            }
+        }
+        private void PhoneNumberTextBox_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(typeof(string)))
+            {
+                string text = (string)e.DataObject.GetData(typeof(string));
+                Regex regex = new Regex(@"^[\d\+\-\(\)\s]+$");
+                if (!regex.IsMatch(text))
+                {
+                    e.CancelCommand();
+                }
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -5,11 +5,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ContactSecond.ViewModel
 {
-    public class ContactVM : INotifyPropertyChanged
+    public class ContactVM : INotifyPropertyChanged, IDataErrorInfo
     {
         private Contact _contact;
         private string _name;
@@ -109,7 +110,48 @@ namespace ContactSecond.ViewModel
                 OnPropertyChanged(nameof(Email));
             }
         }
+        public string Error => null;
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(Name):
+                        if (Name.Length > 100)
+                        {
+                            return "Имя должно быть не длиннее 100 символов";
+                        }
+                        if (String.IsNullOrWhiteSpace(Name))
+                        {
+                            return "Имя не может быть пустым";
+                        }
+                        break;
 
+                    case nameof(PhoneNumber):
+                        if (PhoneNumber.Length > 100)
+                        {
+                            return "Номер должен быть не длиннее 100 символов";
+                        }
+                        if (!Regex.IsMatch(PhoneNumber, @"^[\d\+\-\(\)\s]+$"))
+                            return "Телефон может содержать только цифры, +, -, ()";
+                        if (String.IsNullOrWhiteSpace(PhoneNumber))
+                            return "Телефон не может быть пустым";
+                        break;
+                    case nameof(Email):
+                        if (Email.Length > 100)
+                            return "Почтовый адрес не может быть длиннее 100 символов";
+                        if (!Email.Contains("@"))
+                            return "Почтовый адрес должен содержать символ @";
+                        if (String.IsNullOrWhiteSpace(Email))
+                            return "Почтовый адрес не может быть пустым";
+                        break;
+
+                }
+                return null;
+            }
+        }
+            
         /// <summary>
         /// Событие, возникающее при изменении значения свойства.
         /// </summary>

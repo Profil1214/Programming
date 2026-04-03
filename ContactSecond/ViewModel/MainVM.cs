@@ -210,7 +210,7 @@ namespace ContactSecond.ViewModel
         private void ExecuteAdd(object param)
         {
             SelectedContact = null;
-            _tempContact = new ContactVM(new Contact("Без имени", "+", "почты нет"));
+            _tempContact = new ContactVM(new Contact("", "", ""));
             SelectedContact = _tempContact;
             IsAddingNew = true;
             IsEditNew = false;
@@ -222,7 +222,18 @@ namespace ContactSecond.ViewModel
         /// </summary>
         /// <param name="param">Параметр команды.</param>
         /// <returns>Возвращает true, если выполняется добавление; иначе false.</returns>
-        private bool CanApply(object param) => IsAddingNew;
+        private bool CanApply(object param)
+        {
+            if (!IsAddingNew) return false;
+            if (SelectedContact == null) return false;
+
+            // Проверяем наличие ошибок валидации
+            bool hasNameError = !string.IsNullOrEmpty(SelectedContact[nameof(ContactVM.Name)]);
+            bool hasPhoneError = !string.IsNullOrEmpty(SelectedContact[nameof(ContactVM.PhoneNumber)]);
+            bool hasEmailError = !string.IsNullOrEmpty(SelectedContact[nameof(ContactVM.Email)]);
+
+            return !hasNameError && !hasPhoneError && !hasEmailError;
+        }
 
         /// <summary>
         /// Выполняет применение изменений при добавлении нового контакта
